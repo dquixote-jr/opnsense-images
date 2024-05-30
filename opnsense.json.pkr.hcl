@@ -32,7 +32,11 @@ source "qemu" "opnsense" {
     ["<enter><wait><left><enter><wait2m>", "Select the disk and install OPNsense"],
     ["<down><enter><wait1m>", "Exit installer and wait 1min for reboot"],
     ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
-    ["8<enter><wait>pfctl -d<enter><wait>", "Disabling firewall"]
+    ["8<enter><wait>pfctl -d<enter><wait>", "Disabling firewall"],
+    [
+      "curl -o /root/first-boot.sh  http://{{ .HTTPIP }}:{{ .HTTPPort }}/first-boot.sh<enter><wait3s>",
+      "Download first-boot.sh"
+    ]
   ]
   shutdown_command = "shutdown<enter>"
 
@@ -54,7 +58,7 @@ source "qemu" "opnsense" {
   ssh_username = "root"
   ssh_password = "opnsense"
 
-  headless = true # Set false to enable visual debug
+  headless = false # Set false to enable visual debug
 
   vm_name = "opnsense.qcow2"
 }

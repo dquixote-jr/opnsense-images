@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <opnsense>
     <theme>opnsense</theme>
     <sysctl>
@@ -205,6 +205,21 @@
             <value>YES</value>
             <descr/>
         </item>
+        <item>
+            <tunable>autoboot_delay</tunable>
+            <value>-1</value>
+            <descr/>
+        </item>
+        <item>
+            <tunable>beastie_disable</tunable>
+            <value>YES</value>
+            <descr/>
+        </item>
+        <item>
+            <tunable>console</tunable>
+            <value>comconsole,vidconsole</value>
+            <descr/>
+        </item>
     </sysctl>
     <system>
         <optimization>normal</optimization>
@@ -225,6 +240,7 @@
             <scope>system</scope>
             <groupname>admins</groupname>
             <password>$2y$10$YRVoF4SgskIsrXOvOQjGieB9XqHPRra9R7d80B3BZdbY/j21TwBfS</password>
+            <authorizedkeys>autochangeme_authorizedkeys==</authorizedkeys>
             <uid>0</uid>
         </user>
         <nextuid>2000</nextuid>
@@ -235,6 +251,7 @@
         <webgui>
             <protocol>https</protocol>
             <ssl-certref>6654541f01fb4</ssl-certref>
+            <nohttpreferercheck>1</nohttpreferercheck>
         </webgui>
         <disablenatreflection>yes</disablenatreflection>
         <usevirtualterminal>1</usevirtualterminal>
@@ -268,7 +285,7 @@
         <rrdbackup>-1</rrdbackup>
         <netflowbackup>-1</netflowbackup>
         <firmware version="1.0.1">
-            <mirror/>
+            <mirror>https://mirror-opnsense.serverbase.ch</mirror>
             <flavour/>
             <plugins/>
             <type/>
@@ -277,6 +294,8 @@
         </firmware>
         <serialspeed>115200</serialspeed>
         <primaryconsole>video</primaryconsole>
+        <prefer_ipv4>1</prefer_ipv4>
+        <sudo_allow_wheel>2</sudo_allow_wheel>
     </system>
     <interfaces>
         <wan>
@@ -288,6 +307,7 @@
             <subnet/>
             <gateway/>
             <blockbogons>1</blockbogons>
+            <blockpriv>1</blockpriv>
             <dhcphostname/>
             <media/>
             <mediaopt/>
@@ -313,7 +333,7 @@
         <rocommunity>public</rocommunity>
     </snmpd>
     <filter>
-        <rule uuid="ddb25743-67d4-47f5-b7fd-9b9b03099ddd">
+        <rule uuid="b0790c3d-3e9a-44e4-bf4e-7637d57a8b7e">
             <type>pass</type>
             <interface>wan</interface>
             <ipprotocol>inet46</ipprotocol>
@@ -321,13 +341,30 @@
             <descr>Enable SSH access on WAN</descr>
             <direction>in</direction>
             <quick>1</quick>
+            <protocol>icmp</protocol>
+            <source>
+                <any>1</any>
+            </source>
+            <destination>
+                <network>(self)</network>
+            </destination>
+        </rule>
+        <rule uuid="76147783-14e9-4ced-a71e-f0fe6820fa9a">
+            <type>pass</type>
+            <interface>wan</interface>
+            <ipprotocol>inet46</ipprotocol>
+            <statetype>keep state</statetype>
+            <descr>Allow Web GUI access from WAN</descr>
+            <direction>in</direction>
+            <log>1</log>
+            <quick>1</quick>
             <protocol>tcp</protocol>
             <source>
                 <any>1</any>
             </source>
             <destination>
-                <any>1</any>
-                <port>22</port>
+                <network>(self)</network>
+                <port>443</port>
             </destination>
         </rule>
         <rule>
@@ -406,24 +443,19 @@
     </ntpd>
     <widgets>
         <sequence>
-            system_information-container:00000000-col3:show,services_status-container:00000001-col4:show,gateways-container:00000002-col4:show,interface_list-container:00000003-col4:show
+            system_information-container:00000000-col3:show,services_status-container:00000001-col3:show,gateways-container:00000002-col4:show,cpu_usage-container:00000003-col4:show,interface_statistics-container:00000004-col4:show
         </sequence>
         <column_count>2</column_count>
     </widgets>
-    <revision>
-        <username>root@10.8.3.140</username>
-        <time>1716802979.6353</time>
-        <description>/system_advanced_sysctl.php made changes</description>
-    </revision>
     <OPNsense>
         <wireguard>
-            <client version="0.0.7">
+            <client version="1.0.0">
                 <clients/>
             </client>
             <general version="0.0.1">
                 <enabled>0</enabled>
             </general>
-            <server version="0.0.4">
+            <server version="1.0.0">
                 <servers/>
             </server>
         </wireguard>
@@ -531,7 +563,7 @@
                     <http_port>8000</http_port>
                 </general>
             </ctrl_agent>
-            <dhcp4 version="0.0.1">
+            <dhcp4 version="1.0.0">
                 <general>
                     <enabled>0</enabled>
                     <interfaces/>
@@ -744,7 +776,7 @@
             <queues/>
             <rules/>
         </TrafficShaper>
-        <unboundplus version="1.0.8">
+        <unboundplus version="1.0.9">
             <general>
                 <enabled>1</enabled>
                 <port>53</port>
