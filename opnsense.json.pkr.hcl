@@ -8,7 +8,7 @@ packer {
 }
 
 source "qemu" "opnsense" {
-  boot_wait  = "3s"
+  boot_wait = "3s"
   boot_steps = [
     ["1", "Boot in multi user mod"],
     ["<wait1m>", "Wait for boot and skip configuration importer"],
@@ -34,8 +34,12 @@ source "qemu" "opnsense" {
     ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
     ["8<enter><wait>pfctl -d<enter><wait>", "Disabling firewall"],
     [
-      "curl -o /root/first-boot.sh  http://{{ .HTTPIP }}:{{ .HTTPPort }}/first-boot.sh<enter><wait3s>",
+      "curl -o /usr/local/etc/rc.d/firstboot  http://{{ .HTTPIP }}:{{ .HTTPPort }}/first-boot.sh<enter><wait3s>",
       "Download first-boot.sh"
+    ],
+    [
+      "chmod +x /usr/local/etc/rc.d/firstboot<enter>",
+      "Add executable permission to firstboot script"
     ]
   ]
   shutdown_command = "shutdown<enter>"
@@ -47,7 +51,7 @@ source "qemu" "opnsense" {
   net_device       = "virtio-net"
 
   iso_checksum = "${var.iso_checksum}"
-  iso_urls     = [
+  iso_urls = [
     "./iso/OPNsense-${var.version}-dvd-amd64.iso",
   ]
   output_directory = "output"
@@ -58,7 +62,7 @@ source "qemu" "opnsense" {
   ssh_username = "root"
   ssh_password = "opnsense"
 
-  headless = false # Set false to enable visual debug
+  headless = true # Set false to enable visual debug
 
   vm_name = "opnsense.qcow2"
 }
@@ -69,7 +73,7 @@ build {
 
   provisioner "shell" {
     execute_command = "chmod +x {{ .Path }}; /bin/sh -c '{{ .Vars }} {{ .Path }}'"
-    scripts         = [
+    scripts = [
       "scripts/base.sh",
       "scripts/qemu-guest-agent.sh",
       "scripts/cloud-init.sh",
@@ -82,7 +86,7 @@ variable "version" {
   type    = string
   default = "24.1"
   validation {
-    condition     = can(regex("^\\d{2}\\.\\d$", var.version))
+    condition = can(regex("^\\d{2}\\.\\d$", var.version))
     error_message = "The version should be XX.X. Ex: 24.1."
   }
 }
@@ -91,7 +95,7 @@ variable "iso_checksum" {
   type    = string
   default = "sha1:2722ee32814ee722bb565ac0dd83d9ebc1b31ed9"
   validation {
-    condition     = can(regex("^\\w+:\\w+", var.iso_checksum))
+    condition = can(regex("^\\w+:\\w+", var.iso_checksum))
     error_message = "The ISO checksum should be <type>:<value>. Ex: sha1:2722ee32814ee722bb565ac0dd83d9ebc1b31ed9."
   }
 }

@@ -6,9 +6,10 @@ set -e
 echo "Install Cloud-init package"
 pkg install -y net/cloud-init
 
-mkdir -p /etc/cloud/
+mkdir -p /etc/cloud/cloud.cfg.d/
 
-cat <<EOF >/etc/cloud/cloud.cfg
+cat <<EOF >/etc/cloud/cloud.cfg.d/01-cloud.cfg
+#cloud-config
 # The top level settings are used as module
 # and system configuration.
 syslog_fix_perms: root:wheel
@@ -24,7 +25,7 @@ preserve_hostname: false
 # If you use multi line array, ds-identify script won't read array items.
 # This should not be required, but leave it in place until the real cause of
 # not finding -any- datasources is resolved.
-datasource_list: ['NoCloud', 'ConfigDrive', 'Azure', 'OpenStack', 'Ec2']
+#datasource_list: ['OpenStack', 'NoCloud', 'ConfigDrive', 'Azure', 'Ec2']
 # Example datasource config
 # datasource:
 #    Ec2:
@@ -85,7 +86,7 @@ cloud_final_modules:
 # (not accessible to handlers/transforms)
 system_info:
    # This will affect which distro class gets used
-   distro: opnsense
+   distro: freebsd
    network:
       renderers: ['freebsd']
 growpart:
@@ -95,8 +96,6 @@ growpart:
       - /dev/da0p3
       - /
 
-runcmd:
-  - [ sh, /root/first-boot.sh ]
 
 EOF
 
