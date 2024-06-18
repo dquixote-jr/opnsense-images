@@ -37,16 +37,17 @@ start_cmd="${name}_start"
 
 firstboot_start() {
 
-  export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:
+  logger "Started set root password and post to metadata service"
 
-  if [ ! -e "/var/lib/cloud/instance/rootpassword-random" ]; then
+  if [ -e "/var/lib/cloud/instance/rootpassword-random" ]; then
+    logger "Password has already been set."
     # script already ran on this instance.
     # /var/lib/cloud/instance/ is a symlink to /var/lib/cloud/instances/$instance_uuid
     # if user creates an image and deploys image, this must run again, that file will not exist
     exit 0
   fi
 
-  echo "Started set root password and post to metadata service"
+  export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/root/bin
 
   # Two tmp files for the SSH and SSL pubkey
   SSH_KEYFILE=$(mktemp)
@@ -55,7 +56,7 @@ firstboot_start() {
   # get the ssh public key from the metadata server.
   curl -s -f http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key >$SSH_KEYFILE
   if [ $? != 0 ]; then
-    echo "Instance public SSH key not found on metadata service. Unable to set password"
+    logger "Instance public SSH key not found on metadata service. Unable to set password"
     exit 0
   fi
 
@@ -67,7 +68,7 @@ firstboot_start() {
   # our images have have ged installed so should have enough entropy at boot.
   RANDOM_PASSWORD="$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -c 30)"
   if [ -z ${RANDOM_PASSWORD} ]; then
-    echo "unable to generate random password."
+    logger "unable to generate random password."
     exit 0
   fi
 
@@ -86,9 +87,6 @@ firstboot_start() {
   # housekeeping
   rm -rf $SSH_KEYFILE $SSL_KEYFILE
 
-  # NOTE(vinetos): Reload OPNsense to apply our modifications
-  opnsense-shell reload
-
   # Make sure the script wont be run again by error
   mkdir -p /var/lib/cloud/instance/
   touch /var/lib/cloud/instance/rootpassword-random
@@ -100,9 +98,12 @@ firstboot_start() {
   #sleep to make sure everything is done
   sleep 1
 
-  exit 0
+  # Clean up history file
+  rm /root/.history
+
+  # NOTE(vinetos): Reload OPNsense to apply our modifications
+  opnsense-shell reload
 }
 
 load_rc_config $name
-dummy_svcj="NO"
 run_rc_command "$1"

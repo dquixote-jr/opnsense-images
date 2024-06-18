@@ -11,7 +11,7 @@ source "qemu" "opnsense" {
   boot_wait = "3s"
   boot_steps = [
     ["1", "Boot in multi user mod"],
-    ["<wait1m>", "Wait for boot and skip configuration importer"],
+    ["<wait3m>", "Waiting 3min for guest to start"],
     ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
     ["1<enter><wait>", "Start manual interface assignment"],
     ["N<enter><wait>", "Do not configure LAGGs now"],
@@ -20,7 +20,7 @@ source "qemu" "opnsense" {
     ["<enter><wait>", "Skip LAN interface configuration"],
     ["<enter><wait>", "Skip Optional interface 1 configuration"],
     ["y<enter><wait>", "I want to proceed"],
-    ["<wait10s>", "Wait for OPNSense to start"],
+    ["<wait30s>", "Wait for OPNSense to reload"],
     ["<wait>8<enter>", "Enter in shell"],
     [
       "curl -o /conf/config.xml  http://{{ .HTTPIP }}:{{ .HTTPPort }}/config.xml<enter><wait3s>",
@@ -29,8 +29,8 @@ source "qemu" "opnsense" {
     ["opnsense-installer<enter><wait>", "Run OPNsense Installer"],
     ["<enter><wait>", "Use default keymap"],
     ["<enter><wait3s>", "Use UFS"],
-    ["<enter><wait><left><enter><wait2m>", "Select the disk and install OPNsense"],
-    ["<down><enter><wait1m>", "Exit installer and wait 1min for reboot"],
+    ["<enter><wait><left><enter><wait7m>", "Select the disk and install OPNsense"],
+    ["<down><enter><wait2m>", "Exit installer and wait 2min for guest to start"],
     ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
     ["8<enter><wait>pfctl -d<enter><wait>", "Disabling firewall"],
     [
@@ -62,7 +62,14 @@ source "qemu" "opnsense" {
   ssh_username = "root"
   ssh_password = "opnsense"
 
-  headless = true # Set false to enable visual debug
+  # Setting headless to false open the libvirt gui to actually see
+  # the installer is doing
+  headless = true
+
+  # You may use this for debug purpose
+  # vnc_bind_address = "0.0.0.0"
+  # vnc_port_min = 5901
+  # vnc_port_max = 5901
 
   vm_name = "opnsense.qcow2"
 }

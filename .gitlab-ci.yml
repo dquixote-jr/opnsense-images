@@ -1,0 +1,40 @@
+image:
+  name: registry.gitlab.com/open-images/build-container:latest
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+variables:
+  PKR_VAR_MIRROR: "https://mirror.init7.net/opnsense" # OPNSense mirror
+
+before_script:
+  - packer --version
+
+stages:
+  - validate
+  - build
+  - test
+  - deploy
+
+validate:
+  stage: validate
+  script:
+    - packer init .
+    - find . -maxdepth 1 -name '*.hcl' -print0 | xargs -t0n1 packer validate
+
+build:
+  stage: build
+  only:
+    - tags
+  tags:
+    - dedicated
+  before_script:
+    - export PKR_VAR_VERSION=$CI_COMMIT_TAG
+    - export PKR_VAR_ISO_CHECKSUM=$CI_COMMIT_TAG_MESSAGE
+    - sh get-iso.sh
+    - packer init .
+  script:
+    - packer build .
+  artifacts:
+    paths:
+      - "*/**/*.qcow2"
