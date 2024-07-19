@@ -1,14 +1,13 @@
-image:
-  name: registry.gitlab.com/open-images/build-container:latest
-  entrypoint:
-    - '/usr/bin/env'
-    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
-
 variables:
   PKR_VAR_MIRROR: "https://mirror.init7.net/opnsense" # OPNSense mirror
 
-before_script:
-  - packer --version
+default:
+  tags: [ dedicated, linux ]
+  image:
+    name: registry.gitlab.com/open-images/docker-images-factory:qemu
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
 stages:
   - validate
@@ -18,16 +17,18 @@ stages:
 
 validate:
   stage: validate
+  before_script:
+    - packer --version
   script:
     - packer init .
     - find . -maxdepth 1 -name '*.hcl' -print0 | xargs -t0n1 packer validate
 
-build:
+build iso:
   stage: build
   only:
     - tags
-  tags:
-    - dedicated
+  dependencies:
+    - validate
   before_script:
     - export PKR_VAR_VERSION=$CI_COMMIT_TAG
     - export PKR_VAR_ISO_CHECKSUM=$CI_COMMIT_TAG_MESSAGE
@@ -37,4 +38,19 @@ build:
     - packer build .
   artifacts:
     paths:
-      - "*/**/*.qcow2"
+      - output/
+    expire_in: 7 days
+
+publish to minio:
+  stage: deploy
+  image:
+    name: registry.gitlab.com/open-images/docker-images-factory:object-clients-lnx
+    entrypoint: [""]
+  dependencies:
+    - build iso
+  variables:
+    STORAGE_PROVIDER: minio
+  script:
+    - /usr/bin/python /entrypoint.py output/opnsense.qcow2
+  only:
+    - tags
