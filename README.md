@@ -23,7 +23,7 @@ Download OPNsense DVD iso:
 Make sure to run privileged container
 
 ```shell
-sudo docker run --privileged -v .:/input -v ./output:/output openimage:latest
+sudo docker run --privileged -v .:/input -v ./output:/output registry.gitlab.com/open-images/docker-images-factory:qemu
 ```
 
 ### Manually
@@ -71,5 +71,5 @@ The build of this image highly relies on speed of the worker. You way want to ad
 Make sure to run privileged container
 
 ```shell
-sudo docker run --privileged -p 5901:5901 -v .:/input -v ./output:/output openimage:latest
+sudo docker run --privileged -p 5901:5901 -v .:/input -v ./output:/output -e PACKER_LOG=1 registry.gitlab.com/open-images/docker-images-factory:qemu
 ```

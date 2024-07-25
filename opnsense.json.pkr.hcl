@@ -23,13 +23,13 @@ source "qemu" "opnsense" {
     ["<wait30s>", "Wait for OPNSense to reload"],
     ["<wait>8<enter>", "Enter in shell"],
     [
-      "curl -o /conf/config.xml  http://{{ .HTTPIP }}:{{ .HTTPPort }}/config.xml<enter><wait3s>",
+      "curl -o /conf/config.xml http://{{ .HTTPIP }}:{{ .HTTPPort }}/config.xml<enter><wait3s>",
       "Download config.xml"
     ],
     ["opnsense-installer<enter><wait>", "Run OPNsense Installer"],
     ["<enter><wait>", "Use default keymap"],
-    ["<enter><wait3s>", "Use UFS"],
-    ["<enter><wait><left><enter><wait7m>", "Select the disk and install OPNsense"],
+    ["${local.select_install_type}<enter><wait3s>", "Use UFS"],
+    ["<enter><wait><left><enter><wait5m>", "Select the disk and install OPNsense"],
     ["<down><enter><wait2m>", "Exit installer and wait 2min for guest to start"],
     ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
     ["8<enter><wait>pfctl -d<enter><wait>", "Disabling firewall"],
@@ -50,9 +50,9 @@ source "qemu" "opnsense" {
   http_directory   = "http"
   net_device       = "virtio-net"
 
-  iso_checksum = "${var.iso_checksum}"
+  iso_checksum = "${var.ISO_CHECKSUM}"
   iso_urls = [
-    "./iso/OPNsense-${var.version}-dvd-amd64.iso",
+    "./iso/OPNsense-${var.VERSION}-dvd-amd64.iso",
   ]
   output_directory = "output"
   format           = "qcow2"
@@ -89,20 +89,26 @@ build {
   }
 }
 
-variable "version" {
+variable "VERSION" {
   type    = string
   default = "24.1"
   validation {
-    condition = can(regex("^\\d{2}\\.\\d$", var.version))
+    condition = can(regex("^\\d{2}\\.\\d$", var.VERSION))
     error_message = "The version should be XX.X. Ex: 24.1."
   }
 }
 
-variable "iso_checksum" {
+variable "ISO_CHECKSUM" {
   type    = string
-  default = "sha1:2722ee32814ee722bb565ac0dd83d9ebc1b31ed9"
+  default = "sha1:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   validation {
-    condition = can(regex("^\\w+:\\w+", var.iso_checksum))
+    condition = can(regex("^\\w+:\\w+", var.ISO_CHECKSUM))
     error_message = "The ISO checksum should be <type>:<value>. Ex: sha1:2722ee32814ee722bb565ac0dd83d9ebc1b31ed9."
   }
+}
+
+local "select_install_type" {
+  # With OPNsense 24.7+, the default install is ZFS
+  # With new version, we have to press <down> to select UFS install
+  expression = convert(var.VERSION, number) < 24.7 ? "" : "<down>"
 }
