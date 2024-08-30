@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="[https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)">
-    <img src="images/logo.png" alt="Logo" width="250">
+    <img src="images/logo.png" alt="Logo" width="150">
   </a>
 
 <h3 align="center">OPNsense image for OpenStack</h3>
@@ -82,7 +82,7 @@ Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.md` for mo
 ## Contact
 
 Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io
-
+Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr 
 Project Link: [https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
