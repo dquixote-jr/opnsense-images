@@ -55,7 +55,7 @@ This image is updated when OPNsense team released a new version of the OS [here]
    ```bash
    nova get-password <INSTANCE_ID> <YOUR_PRIVATE_KEY_FILE>
    ```
-   You can also retrieve the password from the Horizon interface in the Instances section. Then, in the dropdown menu on the right side of your instance’s row, select “Retrieve Password.”
+   You can also retrieve the password from the Horizon interface in the Instances section. Then, in the dropdown menu on the right side of your instance’s row, select **Retrieve Password**.
 
    Alternatively you can connect to the OPNsense appliance via SSH with the user **root** and your private key.
 
