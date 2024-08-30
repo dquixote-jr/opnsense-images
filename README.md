@@ -93,7 +93,7 @@ Project Link: https://gitlab.com/open-images/opnsense
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/gitlab/contributors/open-images/opnsense.svg?style=flat-square
 [contributors-url]: https://gitlab.com/linitio/openstack-alpine-image/graphs/contributors
-[builds-shield]: https://img.shields.io/gitlab/pipeline-status/open-images/opnsense.svg?style=flat-square
+[builds-shield]: https://img.shields.io/gitlab/pipeline-status/open-images/opnsense.svg??style=for-the-badge&logo=gitlab
 [builds-url]: https://gitlab.com/open-images/opnsense/-/pipelines
 [stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=flat-square
 [stars-url]: https://gitlab.com/open-images/opnsense/-/starrers
