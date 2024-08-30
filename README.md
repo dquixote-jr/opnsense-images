@@ -45,7 +45,8 @@ This image is updated when Alpine Linux team released a new version of the OS [h
 1. Set your OpenStack environement variables
 2. Download the latest image from the [repository page](https://s3.openimages.cloud/opnsense-image/index.html "Images Repository")
 3. Upload image to your OpenStack environment
-   ```sh
+
+   ```bash
    openstack image create --disk-format=qcow2 --container-format=bare --file alpine-<VERSION>-x86_64.qcow2  'Alpine <VERSION>'
    ```
 
@@ -72,7 +73,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.md` for more information.
+Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -81,9 +82,9 @@ Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.md` for mo
 <!-- CONTACT -->
 ## Contact
 
-Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io
-Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr 
-Project Link: [https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)
+Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io.  
+Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr.  
+Project Link: https://gitlab.com/open-images/opnsense
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
