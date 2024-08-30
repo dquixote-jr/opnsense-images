@@ -39,7 +39,6 @@ This image used the GitLab CI/CD pipeline and packer from Hashicorp to build bas
 This image is updated when OPNsense team released a new version of the OS [here](https://docs.opnsense.org/releases.html "OPNsense Release Inventory").
 
 <div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 ### How to use this image
 
@@ -51,7 +50,7 @@ This image is updated when OPNsense team released a new version of the OS [here]
    openstack image create --disk-format=qcow2 --container-format=bare --min-disk 8 --file opnsense-<VERSION>.qcow2  'OPNsense <VERSION>'
    ```
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -67,7 +66,7 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
 
 
 
@@ -76,7 +75,7 @@ Don't forget to give the project a star! Thanks again!
 
 Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
 
 
 
@@ -87,7 +86,7 @@ Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io.
 Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr.  
 Project Link: https://gitlab.com/open-images/opnsense
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
