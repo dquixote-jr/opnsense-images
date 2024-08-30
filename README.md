@@ -21,7 +21,7 @@
   <p align="center">
     Port of OPNsense distribution for OpenStack environments
     <br />
-    <a href="[def]"><strong>Explore the docs »</strong></a>
+    <a href="https://gitlab.com/open-images/opnsense"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://gitlab.com/open-images/opnsense/issues">Report Bug</a>
