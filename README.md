@@ -49,6 +49,15 @@ This image is updated when OPNsense team released a new version of the OS [here]
    ```bash
    openstack image create --disk-format=qcow2 --container-format=bare --min-disk 8 --file opnsense-<VERSION>.qcow2  'OPNsense <VERSION>'
    ```
+4. To connect on the OPNsense appliance, enter the IP address of your instance in web browser to access to the OPNsense web interface.
+   
+   The username is **root** and the password can be retreive with this command:
+   ```bash
+   nova get-password <INSTANCE_ID> <YOUR_PRIVATE_KEY_FILE>
+   ```
+   You can also retrieve the password from the Horizon interface in the Instances section. Then, in the dropdown menu on the right side of your instance’s row, select “Retrieve Password.”
+
+   Alternatively you can connect to the OPNsense appliance via SSH with the user **root** and your private key.
 
 <div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
 
