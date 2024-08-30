@@ -3,7 +3,7 @@
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
 [![Builds][builds-shield]][builds-url]
-[![Versions][versions-shield]][versionss-url]
+[![Versions][versions-shield]][versions-url]
 [![Starrers][stars-shield]][stars-url]
 [![Forks][forks-shield]][forks-url]
 [![Issues][issues-shield]][issues-url]
