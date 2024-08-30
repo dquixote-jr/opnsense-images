@@ -105,4 +105,5 @@ Project Link: https://gitlab.com/open-images/opnsense
 [forks-url]: https://gitlab.com/open-images/opnsense/-/forks
 [issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=for-the-badge
 [issues-url]: https://gitlab.com/open-images/opnsense/-/issues
-[license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=for-the-
+[license-url]: https://gitlab.com/open-images/opnsense/-/blob/main/LICENCE.txt
