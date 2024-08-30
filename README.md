@@ -91,13 +91,13 @@ Project Link: https://gitlab.com/open-images/opnsense
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/gitlab/contributors/open-images/opnsense.svg?style=flat-square
+[contributors-shield]: https://img.shields.io/gitlab/contributors/open-images/opnsense.svg?style=for-the-badge
 [contributors-url]: https://gitlab.com/linitio/openstack-alpine-image/graphs/contributors
-[builds-shield]: https://img.shields.io/gitlab/pipeline-status/open-images/opnsense.svg??style=for-the-badge&logo=gitlab
+[builds-shield]: https://img.shields.io/gitlab/pipeline-status/open-images/opnsense.svg?style=for-the-badge&logo=gitlab
 [builds-url]: https://gitlab.com/open-images/opnsense/-/pipelines
-[stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=flat-square
+[stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=for-the-badge
 [stars-url]: https://gitlab.com/open-images/opnsense/-/starrers
-[issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=flat-square
+[issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=for-the-badge
 [issues-url]: https://gitlab.com/open-images/opnsense/-/issues
-[license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=flat-square
+[license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=for-the-badge
 [license-url]: https://gitlab.com/open-images/opnsense/-/blob/main/LICENCE.txt
