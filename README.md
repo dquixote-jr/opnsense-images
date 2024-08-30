@@ -33,9 +33,9 @@
 ## About The Project
 
 This project is a port of OPNsense releases for OpenStack environments.  
-This image used the the project [alpine-make-vm-image](https://gitlab.com/alpinelinux/alpine-make-vm-image "alpine-make-vm-image project") to build base image and we make some change to make it compatible with OpenStack environments and cloud-init.  
+This image used the GitLab CI/CD pipeline and packer from Hashicorp to build base image and we make some change to make it compatible with OpenStack environments and cloud-init.  
 
-This image is updated when Alpine Linux team released a new version of the OS [here](https://alpinelinux.org/releases/ "Alpine linux Release Inventory").
+This image is updated when OPNsense team released a new version of the OS [here](https://docs.opnsense.org/releases.html "OPNsense Release Inventory").
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -47,7 +47,7 @@ This image is updated when Alpine Linux team released a new version of the OS [h
 3. Upload image to your OpenStack environment
 
    ```bash
-   openstack image create --disk-format=qcow2 --container-format=bare --file opnsense-<VERSION>.qcow2  'OPNsense <VERSION>'
+   openstack image create --disk-format=qcow2 --container-format=bare --min-disk 8 --file opnsense-<VERSION>.qcow2  'OPNsense <VERSION>'
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -91,14 +91,13 @@ Project Link: https://gitlab.com/open-images/opnsense
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/gitlab/contributors/open-images/opnsense.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/gitlab/contributors/open-images/opnsense.svg?style=flat-square
 [contributors-url]: https://gitlab.com/linitio/openstack-alpine-image/graphs/contributors
-[builds-shield]: https://img.shields.io/gitlab/pipeline-status/open-images/opnsense.svg?style=for-the-badge
+[builds-shield]: https://img.shields.io/gitlab/pipeline-status/open-images/opnsense.svg?style=flat-square
 [builds-url]: https://gitlab.com/open-images/opnsense/-/pipelines
-[stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=for-the-badge
-[stars-url]: https://gitlab.com/linitio/openstack-alpine-image/stargazers
-[issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=for-the-badge
-[issues-url]: https://gitlab.com/linitio/openstack-alpine-image/issues
-[license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=for-the-badge
-[license-url]: https://gitlab.com/linitio/openstack-alpine-image/blob/master/LICENSE.md
-[def]: https://gitlab.com/open-images/opnsense
+[stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=flat-square
+[stars-url]: https://gitlab.com/open-images/opnsense/-/starrers
+[issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=flat-square
+[issues-url]: https://gitlab.com/open-images/opnsense/-/issues
+[license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=flat-square
+[license-url]: https://gitlab.com/open-images/opnsense/-/blob/main/LICENCE.txt
