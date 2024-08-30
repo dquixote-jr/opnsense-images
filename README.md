@@ -20,7 +20,7 @@
   <p align="center">
     Port of OPNsense distribution for OpenStack environments
     <br />
-    <a href="https://gitlab.com/open-images/opnsense"><strong>Explore the docs »</strong></a>
+    <a href="[def]"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://gitlab.com/open-images/opnsense/issues">Report Bug</a>
@@ -81,9 +81,9 @@ Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.md` for mo
 <!-- CONTACT -->
 ## Contact
 
-Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io
-Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr 
-Project Link: [https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)
+Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io  
+Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr  
+Project Link: [https://gitlab.com/open-images/opnsense][def]
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -100,3 +100,4 @@ Project Link: [https://gitlab.com/open-images/opnsense](https://gitlab.com/open-
 [issues-url]: https://gitlab.com/linitio/openstack-alpine-image/issues
 [license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=for-the-badge
 [license-url]: https://gitlab.com/linitio/openstack-alpine-image/blob/master/LICENSE.md
+[def]: https://gitlab.com/open-images/opnsense
