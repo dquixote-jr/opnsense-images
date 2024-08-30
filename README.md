@@ -6,20 +6,19 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="[https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)">
-    <img src="images/logo.svg" alt="Logo" width="250">
+    <img src="images/logo.png" alt="Logo" width="250">
   </a>
 
-<h3 align="center">Alpine Linux image for OpenStack</h3>
+<h3 align="center">OPNsense image for OpenStack</h3>
 
   <p align="center">
-    Simple port of Alpine Linux distribution for OpenStack environments
+    Port of OPNsense distribution for OpenStack environments
     <br />
     <a href="https://gitlab.com/open-images/opnsense"><strong>Explore the docs »</strong></a>
     <br />
@@ -44,7 +43,7 @@ This image is updated when Alpine Linux team released a new version of the OS [h
 ### How to use this image
 
 1. Set your OpenStack environement variables
-2. Download the latest image from the [repository page](https://s3.openimages.cloud/opnsense/index.html# "Images Repository")
+2. Download the latest image from the [repository page](https://s3.openimages.cloud/opnsense-image/index.html "Images Repository")
 3. Upload image to your OpenStack environment
    ```sh
    openstack image create --disk-format=qcow2 --container-format=bare --file alpine-<VERSION>-x86_64.qcow2  'Alpine <VERSION>'
@@ -97,9 +96,7 @@ Project Link: [https://gitlab.com/open-images/opnsense](https://gitlab.com/open-
 [forks-url]: https://gitlab.com/linitio/openstack-alpine-image/network/members
 [stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=for-the-badge
 [stars-url]: https://gitlab.com/linitio/openstack-alpine-image/stargazers
-[issues-shield]: https://img.shields.io/gitlab/issues/open-images/opnsense.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=for-the-badge
 [issues-url]: https://gitlab.com/linitio/openstack-alpine-image/issues
 [license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=for-the-badge
 [license-url]: https://gitlab.com/linitio/openstack-alpine-image/blob/master/LICENSE.md
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/kevinallioli
