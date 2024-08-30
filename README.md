@@ -81,9 +81,9 @@ Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.md` for mo
 <!-- CONTACT -->
 ## Contact
 
-Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io
-Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr 
-Project Link: [https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)
+Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io. 
+Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr. 
+Project Link: [https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense). 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
