@@ -2,7 +2,7 @@
 
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
+[![Builds][builds-shield]][builds-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
@@ -32,7 +32,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project is a simple port of Alpine Linux releases for OpenStack environments.  
+This project is a port of OPNsense releases for OpenStack environments.  
 This image used the the project [alpine-make-vm-image](https://gitlab.com/alpinelinux/alpine-make-vm-image "alpine-make-vm-image project") to build base image and we make some change to make it compatible with OpenStack environments and cloud-init.  
 
 This image is updated when Alpine Linux team released a new version of the OS [here](https://alpinelinux.org/releases/ "Alpine linux Release Inventory").
@@ -47,7 +47,7 @@ This image is updated when Alpine Linux team released a new version of the OS [h
 3. Upload image to your OpenStack environment
 
    ```bash
-   openstack image create --disk-format=qcow2 --container-format=bare --file alpine-<VERSION>-x86_64.qcow2  'Alpine <VERSION>'
+   openstack image create --disk-format=qcow2 --container-format=bare --file opnsense-<VERSION>.qcow2  'OPNsense <VERSION>'
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -93,8 +93,8 @@ Project Link: https://gitlab.com/open-images/opnsense
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/gitlab/contributors/open-images/opnsense.svg?style=for-the-badge
 [contributors-url]: https://gitlab.com/linitio/openstack-alpine-image/graphs/contributors
-[forks-shield]: https://img.shields.io/gitlab/forks/open-images/opnsense.svg?style=for-the-badge
-[forks-url]: https://gitlab.com/linitio/openstack-alpine-image/network/members
+[builds-shield]: https://img.shields.io/gitlab/pipeline-status/open-images/opnsense.svg?style=for-the-badge
+[builds-url]: https://gitlab.com/open-images/opnsense/-/pipelines
 [stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=for-the-badge
 [stars-url]: https://gitlab.com/linitio/openstack-alpine-image/stargazers
 [issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=for-the-badge
