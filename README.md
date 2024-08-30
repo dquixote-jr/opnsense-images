@@ -1,75 +1,105 @@
-# OPNsense Cloud Image
+<div id="top"></div>
 
-This repository aims to create a Packer recipe to build OPNsense for Cloud applications (OpenStack, AWS, Azure...).
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-## How to build
 
-### With OpenImage docker
-Configure the build env:
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="[https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)">
+    <img src="images/logo.svg" alt="Logo" width="250">
+  </a>
 
-```shell
-export PKR_VAR_VERSION="24.1" # OPNsense version
-export PKR_VAR_MIRROR="https://mirror.init7.net/opnsense" # OPNSense mirror
-export PKR_VAR_ISO_CHECKSUM="sha1:2722ee32814ee722bb565ac0dd83d9ebc1b31ed9" # ISO Checksum
-```
+<h3 align="center">Alpine Linux image for OpenStack</h3>
 
-Download OPNsense DVD iso:
+  <p align="center">
+    Simple port of Alpine Linux distribution for OpenStack environments
+    <br />
+    <a href="https://gitlab.com/open-images/opnsense"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://gitlab.com/open-images/opnsense/issues">Report Bug</a>
+    ·
+    <a href="https://gitlab.com/open-images/opnsense/issues">Request Feature</a>
+  </p>
+</div>
 
-```shell
-./get-iso.sh
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-```
+This project is a simple port of Alpine Linux releases for OpenStack environments.  
+This image used the the project [alpine-make-vm-image](https://gitlab.com/alpinelinux/alpine-make-vm-image "alpine-make-vm-image project") to build base image and we make some change to make it compatible with OpenStack environments and cloud-init.  
 
-Make sure to run privileged container
+This image is updated when Alpine Linux team released a new version of the OS [here](https://alpinelinux.org/releases/ "Alpine linux Release Inventory").
 
-```shell
-sudo docker run --privileged -v .:/input -v ./output:/output registry.gitlab.com/open-images/docker-images-factory:qemu
-```
 
-### Manually
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-[Install packer](https://developer.hashicorp.com/packer/tutorials/docker-get-started/get-started-install-cli).
+### How to use this image
 
-Configure the build env:
+1. Set your OpenStack environement variables
+2. Download the latest image from the [repository page](https://s3.openimages.cloud/opnsense/index.html# "Images Repository")
+3. Upload image to your OpenStack environment
+   ```sh
+   openstack image create --disk-format=qcow2 --container-format=bare --file alpine-<VERSION>-x86_64.qcow2  'Alpine <VERSION>'
+   ```
 
-```shell
-export PKR_VAR_VERSION="24.1" # OPNsense version
-export PKR_VAR_MIRROR="https://mirror.init7.net/opnsense" # OPNSense mirror
-export PKR_VAR_ISO_CHECKSUM="sha1:2722ee32814ee722bb565ac0dd83d9ebc1b31ed9" # ISO Checksum
-```
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Download OPNsense DVD iso:
+<!-- CONTRIBUTING -->
+## Contributing
 
-```shell
-./get-iso.sh
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-```
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-Initialize packer:
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-```shell
-packer init .
-```
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Build the image:
 
-```shell
-packer build .
-```
 
-The result will be located at `output/opnsense.qcow2`.
+<!-- LICENSE -->
+## License
 
-## Notes
+Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.md` for more information.
 
-The build of this image highly relies on speed of the worker. You way want to adapt `<waitX>` in the recipe file.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-## How to debug the image
-## How to build
 
-### With OpenImage docker
 
-Make sure to run privileged container
+<!-- CONTACT -->
+## Contact
 
-```shell
-sudo docker run --privileged -p 5901:5901 -v .:/input -v ./output:/output -e PACKER_LOG=1 registry.gitlab.com/open-images/docker-images-factory:qemu
-```
+Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io
+
+Project Link: [https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/gitlab/contributors/open-images/opnsense.svg?style=for-the-badge
+[contributors-url]: https://gitlab.com/linitio/openstack-alpine-image/graphs/contributors
+[forks-shield]: https://img.shields.io/gitlab/forks/open-images/opnsense.svg?style=for-the-badge
+[forks-url]: https://gitlab.com/linitio/openstack-alpine-image/network/members
+[stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=for-the-badge
+[stars-url]: https://gitlab.com/linitio/openstack-alpine-image/stargazers
+[issues-shield]: https://img.shields.io/gitlab/issues/open-images/opnsense.svg?style=for-the-badge
+[issues-url]: https://gitlab.com/linitio/openstack-alpine-image/issues
+[license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=for-the-badge
+[license-url]: https://gitlab.com/linitio/openstack-alpine-image/blob/master/LICENSE.md
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/kevinallioli
