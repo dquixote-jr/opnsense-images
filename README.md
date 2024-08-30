@@ -7,7 +7,6 @@
 [![Starrers][stars-shield]][stars-url]
 [![Forks][forks-shield]][forks-url]
 [![Issues][issues-shield]][issues-url]
-[![License][license-shield]][license-url]
 
 
 <!-- PROJECT LOGO -->
@@ -105,5 +104,3 @@ Project Link: https://gitlab.com/open-images/opnsense
 [forks-url]: https://gitlab.com/open-images/opnsense/-/forks
 [issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=for-the-badge
 [issues-url]: https://gitlab.com/open-images/opnsense/-/issues
-[license-shield]: https://img.shields.io/gitlab/license/open-images/opnsense.svg?style=for-the-badge
-[license-url]: https://gitlab.com/open-images/opnsense/-/blob/main/LICENCE.txt
