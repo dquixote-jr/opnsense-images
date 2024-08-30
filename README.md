@@ -38,7 +38,7 @@ This image used the GitLab CI/CD pipeline and packer from Hashicorp to build bas
 
 This image is updated when OPNsense team released a new version of the OS [here](https://docs.opnsense.org/releases.html "OPNsense Release Inventory").
 
-
+[[back to top](#top)]{right-align}
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ### How to use this image
