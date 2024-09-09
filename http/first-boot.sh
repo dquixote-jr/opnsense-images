@@ -61,7 +61,7 @@ firstboot_start() {
   fi
 
   # NOTE(vinetos): OPNsense specific addition of public key for ssh connection
-  PUB_KEY_ENCODED=$(cat "$SSH_KEYFILE" | base64 -e | tr -d \\n)
+  PUB_KEY_ENCODED=$(cat "$SSH_KEYFILE" | base64 | tr -d \\n)
   sed -i '' 's|<authorizedkeys>autochangeme_authorizedkeys==</authorizedkeys>|<authorizedkeys>'"${PUB_KEY_ENCODED}"'</authorizedkeys>|g' /conf/config.xml
 
   # generate a random password
