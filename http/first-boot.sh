@@ -35,12 +35,18 @@ rcvar=firstboot_enable
 
 start_cmd="${name}_start"
 
+log() {
+  MSG="$1"
+  echo "[opnsense-password-generator] ""$MSG" > /dev/ttyu0
+  logger "[opnsense-password-generator] ""$MSG"
+}
+
 firstboot_start() {
 
-  logger "Started set root password and post to metadata service"
+  log "Started set root password and post to metadata service"
 
   if [ -e "/var/lib/cloud/instance/rootpassword-random" ]; then
-    logger "Password has already been set."
+    log "Password has already been set."
     # script already ran on this instance.
     # /var/lib/cloud/instance/ is a symlink to /var/lib/cloud/instances/$instance_uuid
     # if user creates an image and deploys image, this must run again, that file will not exist
@@ -54,36 +60,46 @@ firstboot_start() {
   SSL_KEYFILE=$(mktemp)
 
   # get the ssh public key from the metadata server.
+  log "Retrieve pulbic key from metadata server"
   curl -s -f http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key >$SSH_KEYFILE
   if [ $? != 0 ]; then
-    logger "Instance public SSH key not found on metadata service. Unable to set password"
+    log "Instance public SSH key not found on metadata service. Unable to set password"
     exit 0
   fi
 
   # NOTE(vinetos): OPNsense specific addition of public key for ssh connection
+  log "Encoding key in base64"
   PUB_KEY_ENCODED=$(cat "$SSH_KEYFILE" | base64 | tr -d \\n)
+  log "Updating config.xml"
   sed -i '' 's|<authorizedkeys>autochangeme_authorizedkeys==</authorizedkeys>|<authorizedkeys>'"${PUB_KEY_ENCODED}"'</authorizedkeys>|g' /conf/config.xml
 
   # generate a random password
   # our images have have ged installed so should have enough entropy at boot.
+  log "Generate a random password for root user"
   RANDOM_PASSWORD="$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -c 30)"
   if [ -z ${RANDOM_PASSWORD} ]; then
-    logger "unable to generate random password."
+    log "unable to generate random password."
     exit 0
   fi
 
   # set the root password to this random password
   # add any other password changes like admin for DirectAdmin.
   # NOTE(vinetos): OPNsense specific password change
+  log "Change password for root user"
   printf 'y\n'"$RANDOM_PASSWORD"'\n'"$RANDOM_PASSWORD" | opnsense-shell password
 
   if [ -s "$SSH_KEYFILE" ]; then
     # convert the ssh pubkey to an SSL keyfile so that we can use it to encrypt with OpenSSL
+    log "Convert ssh pubkey to SSL format to encode and upload password"
     ssh-keygen -e -f $SSH_KEYFILE -m PKCS8 >$SSL_KEYFILE
+    log "Encode generated password"
     ENCRYPTED=$(echo "$RANDOM_PASSWORD" | openssl rsautl -encrypt -pubin -inkey $SSL_KEYFILE -keyform PEM | openssl base64 -e -A)
     # post encrypted blob to metadata service. Must return true otherwise instance might fail to boot.
+    log "Post encoded password to metadata-server"
     curl -s -X POST http://169.254.169.254/openstack/2013-04-04/password -d $ENCRYPTED 2>&1 >/dev/null || true
   fi
+
+  log "Cleaning up data"
   # housekeeping
   rm -rf $SSH_KEYFILE $SSL_KEYFILE
 
@@ -102,6 +118,7 @@ firstboot_start() {
   rm /root/.history
 
   # NOTE(vinetos): Reload OPNsense to apply our modifications
+  log "Reloading opensense"
   opnsense-shell reload
 }
 
