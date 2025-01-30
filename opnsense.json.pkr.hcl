@@ -28,7 +28,7 @@ source "qemu" "opnsense" {
     ],
     ["opnsense-installer<enter><wait>", "Run OPNsense Installer"],
     ["<enter><wait>", "Use default keymap"],
-    ["${local.select_install_type}<enter><wait3s>", "Use UFS"],
+    ["<down><enter><wait><enter><wait3s>", "Use UFS"],
     ["<enter><wait><left><enter><wait5m>", "Select the disk and install OPNsense"],
     ["<down><enter><wait2m>", "Exit installer and wait 2min for guest to start"],
     ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
@@ -91,10 +91,10 @@ build {
 
 variable "VERSION" {
   type    = string
-  default = "24.1"
+  default = "25.1"
   validation {
     condition = can(regex("^\\d{2}\\.\\d$", var.VERSION))
-    error_message = "The version should be XX.X. Ex: 24.1."
+    error_message = "The version should be XX.X. Ex: 25.1."
   }
 }
 
@@ -107,8 +107,3 @@ variable "ISO_CHECKSUM" {
   }
 }
 
-local "select_install_type" {
-  # With OPNsense 24.7+, the default install is ZFS
-  # With new version, we have to press <down> to select UFS install
-  expression = convert(var.VERSION, number) < 24.7 ? "" : "<down>"
-}
