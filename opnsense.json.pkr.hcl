@@ -64,8 +64,7 @@ source "qemu" "opnsense" {
 
   # Setting headless to false open the libvirt gui to actually see
   # the installer is doing
-  headless = false
-  display = "cocoa"
+  headless = true
 
   # You may use this for debug purpose
   # vnc_bind_address = "0.0.0.0"
