@@ -25,9 +25,6 @@ jobs:
         run: |
           cat .env >> $GITHUB_ENV
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Cache ISO image
         uses: actions/cache@v4
         id: cache-iso
@@ -46,12 +43,6 @@ jobs:
           packer build .
         env:
           PACKER_LOG: 1
-
-      - name: Wait for tmate session
-        if: failure()
-        run: |
-          echo "Waiting for tmate session to be set up..."
-          sleep 3600 # Wait for an hour to allow debugging
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
