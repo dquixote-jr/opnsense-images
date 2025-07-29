@@ -1,0 +1,61 @@
+name: Build Image
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up qemu
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up packer
+        uses: hashicorp/setup-packer@v3
+
+      - name: Setup environment
+        run: |
+          cat .env >> $GITHUB_ENV
+
+      - name: Build OPNsense image
+        run: |
+          sh get-iso.sh
+          packer init .
+          packer build .
+        env:
+          PACKER_LOG: 1
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: opnsense-image
+          path: output/
+
+  upload-image:
+    runs-on: ubuntu-latest
+    needs: build-image
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+    steps:
+      - name: Make sure output directory exists
+        run: |
+          mkdir -p output
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: opnsense-image
+          path: output
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            output/*
+          body: |
+            OPNsense image built and ready for download.

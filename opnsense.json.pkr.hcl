@@ -91,10 +91,10 @@ build {
 
 variable "VERSION" {
   type    = string
-  default = "25.1"
+  default = "25.7"
   validation {
     condition = can(regex("^\\d{2}\\.\\d$", var.VERSION))
-    error_message = "The version should be XX.X. Ex: 25.1."
+    error_message = "The version should be XX.X. Ex: 25.7."
   }
 }
 
