@@ -16,7 +16,7 @@ jobs:
       - name: Set up qemu
         run: |
           sudo apt-get update
-          sudo apt-get install -y qemu qemu-system-x86 bridge-utils
+          sudo apt-get install -y qemu-system-x86 bridge-utils
 
       - name: Set up packer
         uses: hashicorp/setup-packer@v3
@@ -25,9 +25,20 @@ jobs:
         run: |
           cat .env >> $GITHUB_ENV
 
-      - name: Build OPNsense image
+      - name: Cache ISO image
+        uses: actions/cache@v4
+        id: cache-iso
+        with:
+          path: iso
+          key: iso-${{ github.env.PKR_VAR_ISO_CHECKSUM }}
+
+      - name: Get OPNsense ISO
+        if: ${{ steps.cache-iso.outputs.cache-hit != 'true' }}
         run: |
           sh get-iso.sh
+
+      - name: Build OPNsense image
+        run: |
           packer init .
           packer build .
         env:
