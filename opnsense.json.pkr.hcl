@@ -30,19 +30,19 @@ source "qemu" "opnsense" {
     ["<enter><wait>", "Use default keymap"],
     ["<down><enter><wait><enter><wait3s>", "Use UFS"],
     ["<enter><wait><left><enter><wait5m>", "Select the disk and install OPNsense"],
-    ["<down><enter><wait2m>", "Exit installer and wait 2min for guest to start"],
+    ["<down><enter><wait><enter><wait2m>", "Exit installer and wait 2min for guest to start"],
     ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
     ["8<enter><wait>pfctl -d<enter><wait>", "Disabling firewall"],
     [
-      "curl -o /usr/local/etc/rc.d/firstboot  http://{{ .HTTPIP }}:{{ .HTTPPort }}/first-boot.sh<enter><wait3s>",
-      "Download first-boot.sh"
+      "curl -o /usr/local/bin/opn-apikey http://{{ .HTTPIP }}:{{ .HTTPPort }}/opn-apikey<enter><wait3s>",
+      "Download opn-apikey"
     ],
     [
-      "chmod +x /usr/local/etc/rc.d/firstboot<enter>",
-      "Add executable permission to firstboot script"
+      "chmod +x /usr/local/bin/opn-apikey<enter>",
+      "Add executable permission to opn-apikey script"
     ]
   ]
-  shutdown_command = "shutdown<enter>"
+  shutdown_command = "shutdown -p now<enter>"
 
   disk_size        = "8192M"
   disk_compression = true
@@ -64,7 +64,8 @@ source "qemu" "opnsense" {
 
   # Setting headless to false open the libvirt gui to actually see
   # the installer is doing
-  headless = true
+  headless = false
+  display = "cocoa"
 
   # You may use this for debug purpose
   # vnc_bind_address = "0.0.0.0"
@@ -82,8 +83,6 @@ build {
     execute_command = "chmod +x {{ .Path }}; /bin/sh -c '{{ .Vars }} {{ .Path }}'"
     scripts = [
       "scripts/base.sh",
-      "scripts/qemu-guest-agent.sh",
-      "scripts/cloud-init.sh",
       "scripts/post-install.sh"
     ]
   }
