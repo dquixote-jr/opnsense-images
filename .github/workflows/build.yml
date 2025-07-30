@@ -53,6 +53,9 @@ jobs:
           packer build .
         env:
           PACKER_LOG: 1
+      
+      - name: Setup tmate
+        uses: mxschmitt/action-tmate@v3
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
