@@ -319,7 +319,7 @@
       <subnet/>
       <gateway/>
       <blockbogons>0</blockbogons>
-      <blockpriv>1</blockpriv>
+      <blockpriv>0</blockpriv>
       <dhcphostname/>
       <media/>
       <mediaopt/>
