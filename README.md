@@ -1,114 +1,60 @@
-<div id="top"></div>
+# Overview
+    
+VM image of OPNsense for CI/CD.
 
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Builds][builds-shield]][builds-url]
-[![Versions][versions-shield]][versions-url]
-[![Starrers][stars-shield]][stars-url]
-[![Forks][forks-shield]][forks-url]
-[![Issues][issues-shield]][issues-url]
-
-
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="[https://gitlab.com/open-images/opnsense](https://gitlab.com/open-images/opnsense)">
-    <img src="images/logo.png" alt="Logo" width="150">
-  </a>
-
-<h3 align="center">OPNsense image for OpenStack</h3>
-
-  <p align="center">
-    Port of OPNsense distribution for OpenStack environments
-    <br />
-    <a href="https://gitlab.com/open-images/opnsense"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://gitlab.com/open-images/opnsense/issues">Report Bug</a>
-    ·
-    <a href="https://gitlab.com/open-images/opnsense/issues">Request Feature</a>
-  </p>
-</div>
-
-<!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project is a port of OPNsense releases for OpenStack environments.  
-This image used the GitLab CI/CD pipeline and packer from Hashicorp to build base image and we make some change to make it compatible with OpenStack environments and cloud-init.  
+This repository has a packer configuration to create a qcow2 image of OPNsense, suitable for use with QEMU, in automation such as testing, CI/CD, github actions, etc.
 
-This image is updated when OPNsense team released a new version of the OS [here](https://docs.opnsense.org/releases.html "OPNsense Release Inventory").
-
-<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
+To that end, it has a few customizations:
+- Sets the `root` user password to `opnsense`
+- Has a script [`/usr/local/bin/opn-apikey`](http/opn-apikey) which can create API keys for a user
+- Installs the `qemu-guest-agent` package, which can be used to execute commands in the VM without an SSH connection
+  - Can be used to create API keys together with the above script
+- Disables bogons and private IP ranges from being blocked on the WAN interface
 
 ### How to use this image
 
-1. Set your OpenStack environement variables
-2. Download the latest image from the [repository page](https://s3.openimages.cloud/opnsense-image/index.html "Images Repository")
-3. Upload image to your OpenStack environment
+In one terminal, start the VM using QEMU:
 
-   ```bash
-   openstack image create --disk-format=qcow2 --container-format=bare --min-disk 8 --file opnsense-<VERSION>.qcow2  'OPNsense <VERSION>'
-   ```
-4. To connect on the OPNsense appliance, enter the IP address of your instance in web browser to access to the OPNsense web interface.
-   
-   The username is **root** and the password can be retreive with this command:
-   ```bash
-   nova get-password <INSTANCE_ID> <YOUR_PRIVATE_KEY_FILE>
-   ```
-   You can also retrieve the password from the Horizon interface in the Instances section. Then, in the dropdown menu on the right side of your instance’s row, select **Retrieve Password**.
+```
+$ qemu-system-x86_64 -m 4096 -smp 2 -hda output/opnsense.qcow2 \
+    -netdev user,id=user.0,hostfwd=tcp::8022-:22,hostfwd=tcp::8443-:443 \
+    -device virtio-net,netdev=user.0 \
+    -chardev socket,path=/tmp/qemu-isa-serial.sock,server=on,wait=off,id=qga0 \
+    -device isa-serial,chardev=qga0 \
+    -device virtio-serial \
+    -chardev socket,path=/tmp/qemu-virtconsole.sock,server=on,wait=off,id=qvt0 \
+    -device virtconsole,chardev=qvt0 \
+    -chardev socket,path=/tmp/qemu-virtserialport.sock,server=on,wait=off,id=qvsp0 \
+    -device virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0 \
+    -display ncurses
+```
 
-   Alternatively you can connect to the OPNsense appliance via SSH with the user **root** and your private key.
+In another terminal, connect to the guest agent socket using `socat`, and send instructions through the commandline.
+N.B: The odd numbered lines are instructions sent by the user, the even numbered lines are the responses.
 
-<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
+```
+$ socat - unix-connect:/tmp/qemu-virtserialport.sock
+{"execute": "guest-ping"}  # our input
+{"return": {}}
+{"execute": "guest-exec", "arguments": {"path": "/usr/local/bin/opn-apikey", "arg": ["-u", "root", "create"], "capture-output": true}}  # our input
+{"return": {"pid": 13860}}
+{"execute": "guest-exec-status", "arguments": {"pid": 13860}}  # our input
+{"return": {"exitcode": 0, "out-data": "a2V5PVFEN2tFZVVXR0ZZeFFyeW4zUFY0bHNJMFpMWmpjUi8rVVNiQUozdGh5SStCTWxhdE95d3hBOHZ2UkRxU1N2S2w3UTcwNnNaaFZERHhNb0pYCnNlY3JldD13RmloS3lTeUFmVHo2RUtWWXlmemttR0hJcjJwV0ZCSnV1bVMwSnNLaE1YVlh4Qmxyelcvb0tvNi9nVEh4QXJyTS9mSVI3V2RXTDVVUTNkRQo=", "exited": true}}
+```
 
-<!-- CONTRIBUTING -->
-## Contributing
+The API keys can be found by decoding the base64 output
+```
+$ echo a2V5PVFEN2tFZVVXR0ZZeFFyeW4zUFY0bHNJMFpMWmpjUi8rVVNiQUozdGh5SStCTWxhdE95d3hBOHZ2UkRxU1N2S2w3UTcwNnNaaFZERHhNb0pYCnNlY3JldD13RmloS3lTeUFmVHo2RUtWWXlmemttR0hJcjJwV0ZCSnV1bVMwSnNLaE1YVlh4Qmxyelcvb0tvNi9nVEh4QXJyTS9mSVI3V2RXTDVVUTNkRQo= | base64 --decode
+key=QD7kEeUWGFYxQryn3PV4lsI0ZLZjcR/+USbAJ3thyI+BMlatOywxA8vvRDqSSvKl7Q706sZhVDDxMoJX
+secret=wFihKySyAfTz6EKVYyfzkmGHIr2pWFBJuumS0JsKhMXVXxBlrzW/oKo6/gTHxArrM/fIR7WdWL5UQ3dE
+```
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
-
-
-
-<!-- LICENSE -->
 ## License
 
 Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.txt` for more information.
 
-<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
+## Acknowledgements
 
-
-
-<!-- CONTACT -->
-## Contact
-
-Kevin Allioli - [@linit_io](https://twitter.com/linit_io) - kevin@linit.io.  
-Valentin Chassignol - [@vinetos](https://twitter.com/vinetos) - contact@vinetos.fr.  
-Project Link: https://gitlab.com/open-images/opnsense
-
-<div style="text-align: right"><p align="right">(<a href="#top">back to top</a>)</p></div>
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/gitlab/contributors/open-images/opnsense.svg?style=for-the-badge
-[contributors-url]: https://gitlab.com/linitio/openstack-alpine-image/graphs/contributors
-[builds-shield]: https://img.shields.io/gitlab/pipeline-status/open-images/opnsense.svg?style=for-the-badge
-[builds-url]: https://gitlab.com/open-images/opnsense/-/pipelines
-[versions-shield]: https://img.shields.io/gitlab/v/tag/open-images/opnsense?style=for-the-badge&label=Latest%20version
-[versions-url]: https://gitlab.com/open-images/opnsense/-/tags?sort=version_desc
-[stars-shield]: https://img.shields.io/gitlab/stars/open-images/opnsense.svg?style=for-the-badge
-[stars-url]: https://gitlab.com/open-images/opnsense/-/starrers
-[forks-shield]: https://img.shields.io/gitlab/forks/open-images/opnsense?style=for-the-badge
-[forks-url]: https://gitlab.com/open-images/opnsense/-/forks
-[issues-shield]: https://img.shields.io/gitlab/issues/open/open-images/opnsense.svg?style=for-the-badge
-[issues-url]: https://gitlab.com/open-images/opnsense/-/issues
+This project is a modified version of the amazing work done in the [openstack images repository](https://gitlab.com/open-images/opnsense).

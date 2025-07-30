@@ -11,28 +11,28 @@ source "qemu" "opnsense" {
   boot_wait = "3s"
   boot_steps = [
     ["1", "Boot in multi user mod"],
-    ["<wait3m>", "Waiting 3min for guest to start"],
+    ["<wait6m>", "Waiting 3min for guest to start"],
     ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
-    ["1<enter><wait>", "Start manual interface assignment"],
-    ["N<enter><wait>", "Do not configure LAGGs now"],
-    ["N<enter><wait>", "Do not configure VLANs now"],
-    ["vtnet0<enter><wait>", "Configure WAN interface"],
-    ["<enter><wait>", "Skip LAN interface configuration"],
-    ["<enter><wait>", "Skip Optional interface 1 configuration"],
-    ["y<enter><wait>", "I want to proceed"],
-    ["<wait30s>", "Wait for OPNSense to reload"],
-    ["<wait>8<enter>", "Enter in shell"],
+    ["1<enter><wait2s>", "Start manual interface assignment"],
+    ["N<enter><wait2s>", "Do not configure LAGGs now"],
+    ["N<enter><wait2s>", "Do not configure VLANs now"],
+    ["vtnet0<enter><wait2s>", "Configure WAN interface"],
+    ["<enter><wait2s>", "Skip LAN interface configuration"],
+    ["<enter><wait2s>", "Skip Optional interface 1 configuration"],
+    ["y<enter><wait2s>", "I want to proceed"],
+    ["<wait1m>", "Wait for OPNSense to reload"],
+    ["<wait2s>8<enter><wait2s>", "Enter in shell"],
     [
       "curl -o /conf/config.xml http://{{ .HTTPIP }}:{{ .HTTPPort }}/config.xml<enter><wait3s>",
       "Download config.xml"
     ],
-    ["opnsense-installer<enter><wait>", "Run OPNsense Installer"],
-    ["<enter><wait>", "Use default keymap"],
-    ["<down><enter><wait><enter><wait3s>", "Use UFS"],
-    ["<enter><wait><left><enter><wait5m>", "Select the disk and install OPNsense"],
-    ["<down><enter><wait><enter><wait2m>", "Exit installer and wait 2min for guest to start"],
-    ["root<enter>opnsense<enter><wait3s>", "Login into the firewall"],
-    ["8<enter><wait>pfctl -d<enter><wait>", "Disabling firewall"],
+    ["opnsense-installer<enter><wait2s>", "Run OPNsense Installer"],
+    ["<enter><wait2s>", "Use default keymap"],
+    ["<down><enter><wait2s><enter><wait3s>", "Use UFS"],
+    ["<enter><wait2s><left><enter><wait10m>", "Select the disk and install OPNsense"],
+    ["<down><enter><wait2s><enter><wait5m>", "Exit installer and wait 2min for guest to start"],
+    ["root<enter>opnsense<enter><wait5s>", "Login into the firewall"],
+    ["8<enter><wait2s>pfctl -d<enter><wait2s>", "Disabling firewall"],
     [
       "curl -o /usr/local/bin/opn-apikey http://{{ .HTTPIP }}:{{ .HTTPPort }}/opn-apikey<enter><wait3s>",
       "Download opn-apikey"
@@ -46,7 +46,8 @@ source "qemu" "opnsense" {
 
   disk_size        = "8192M"
   disk_compression = true
-  memory = 2048 # OPNSense require 2G of RAM to install
+  cpus             = 2
+  memory           = 4096 # OPNSense require 2G of RAM to install
   http_directory   = "http"
   net_device       = "virtio-net"
 
@@ -67,12 +68,12 @@ source "qemu" "opnsense" {
   headless = true
 
   qemuargs = [
-    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-isa-serial.sock,server,nowait,id=qga0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-isa-serial.sock,server=on,wait=off,id=qga0"],
     ["-device", "isa-serial,chardev=qga0"],
     ["-device", "virtio-serial"],
-    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-virtconsole.sock,server,nowait,id=qvt0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-virtconsole.sock,server=on,wait=off,id=qvt0"],
     ["-device", "virtconsole,chardev=qvt0"],
-    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-ga2.sock,server,nowait,id=qvsp0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-virtserialport.sock,server=on,wait=off,id=qvsp0"],
     ["-device", "virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0"]
   ]
 
@@ -118,5 +119,5 @@ variable "ISO_CHECKSUM" {
 
 variable "SOCKET_DIR" {
   type    = string
-  default = "/var/run" 
-} 
+  default = "/tmp" 
+}
