@@ -13,6 +13,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Disable triggers
+        run: |
+          mkdir -p /etc/dpkg/dpkg.cfg.d
+          sudo tee /etc/dpkg/dpkg.cfg.d/01_nodoc > /dev/null << 'EOF'
+          path-exclude /usr/share/doc/*
+          path-exclude /usr/share/man/*
+          path-exclude /usr/share/info/*
+          EOF
+
       - name: Set up qemu
         run: |
           sudo apt-get update

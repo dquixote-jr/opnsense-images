@@ -67,12 +67,12 @@ source "qemu" "opnsense" {
   headless = true
 
   qemuargs = [
-    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-isa-serial.sock,server,nowait,id=qga0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-isa-serial.sock,server=on,wait=off,id=qga0"],
     ["-device", "isa-serial,chardev=qga0"],
     ["-device", "virtio-serial"],
-    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-virtconsole.sock,server,nowait,id=qvt0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-virtconsole.sock,server=on,wait=off,id=qvt0"],
     ["-device", "virtconsole,chardev=qvt0"],
-    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-ga2.sock,server,nowait,id=qvsp0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-virtserialport.sock,server=on,wait=off,id=qvsp0"],
     ["-device", "virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0"]
   ]
 
