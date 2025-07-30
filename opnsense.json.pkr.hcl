@@ -66,6 +66,16 @@ source "qemu" "opnsense" {
   # the installer is doing
   headless = true
 
+  qemuargs = [
+    ["-chardev", "socket,path=${var.SOCKET_PATH}/qemu-isa-serial.sock,server,nowait,id=qga0"],
+    ["-device", "isa-serial,chardev=qga0"],
+    ["-device", "virtio-serial"],
+    ["-chardev", "socket,path=${var.SOCKET_PATH}/qemu-virtconsole.sock,server,nowait,id=qvt0"],
+    ["-device", "virtconsole,chardev=qvt0"],
+    ["-chardev", "socket,path=${var.SOCKET_PATH}/qemu-ga2.sock,server,nowait,id=qvsp0"],
+    ["-device", "virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0"]
+  ]
+
   # You may use this for debug purpose
   # vnc_bind_address = "0.0.0.0"
   # vnc_port_min = 5901
@@ -82,6 +92,7 @@ build {
     execute_command = "chmod +x {{ .Path }}; /bin/sh -c '{{ .Vars }} {{ .Path }}'"
     scripts = [
       "scripts/base.sh",
+      "scripts/qemu-guest-agent.sh",
       "scripts/post-install.sh"
     ]
   }
@@ -105,3 +116,7 @@ variable "ISO_CHECKSUM" {
   }
 }
 
+variable "SOCKET_FOLDER" {
+  type    = string
+  default = "/var/run" 
+} 
