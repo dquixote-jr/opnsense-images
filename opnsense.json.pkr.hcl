@@ -118,5 +118,5 @@ variable "ISO_CHECKSUM" {
 
 variable "SOCKET_DIR" {
   type    = string
-  default = "/var/run" 
-} 
+  default = "/tmp" 
+}
