@@ -67,12 +67,12 @@ source "qemu" "opnsense" {
   headless = true
 
   qemuargs = [
-    ["-chardev", "socket,path=${var.SOCKET_PATH}/qemu-isa-serial.sock,server,nowait,id=qga0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-isa-serial.sock,server,nowait,id=qga0"],
     ["-device", "isa-serial,chardev=qga0"],
     ["-device", "virtio-serial"],
-    ["-chardev", "socket,path=${var.SOCKET_PATH}/qemu-virtconsole.sock,server,nowait,id=qvt0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-virtconsole.sock,server,nowait,id=qvt0"],
     ["-device", "virtconsole,chardev=qvt0"],
-    ["-chardev", "socket,path=${var.SOCKET_PATH}/qemu-ga2.sock,server,nowait,id=qvsp0"],
+    ["-chardev", "socket,path=${var.SOCKET_DIR}/qemu-ga2.sock,server,nowait,id=qvsp0"],
     ["-device", "virtserialport,chardev=qvsp0,name=org.qemu.guest_agent.0"]
   ]
 
@@ -116,7 +116,7 @@ variable "ISO_CHECKSUM" {
   }
 }
 
-variable "SOCKET_FOLDER" {
+variable "SOCKET_DIR" {
   type    = string
   default = "/var/run" 
 } 
