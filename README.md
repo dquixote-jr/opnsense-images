@@ -51,11 +51,6 @@ key=QD7kEeUWGFYxQryn3PV4lsI0ZLZjcR/+USbAJ3thyI+BMlatOywxA8vvRDqSSvKl7Q706sZhVDDx
 secret=wFihKySyAfTz6EKVYyfzkmGHIr2pWFBJuumS0JsKhMXVXxBlrzW/oKo6/gTHxArrM/fIR7WdWL5UQ3dE
 ```
 
-## Bugs
-
-Currently the image is unable to be built in the CI.
-But following the exact steps in the CI in a local machine is working.
-
 ## License
 
 Distributed under the BSD 2-Clause "Simplified" License. See `LICENSE.txt` for more information.

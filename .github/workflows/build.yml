@@ -7,6 +7,11 @@ on:
     tags:
       - 'v*'
 
+env:
+  PKR_VAR_MIRROR: https://mirror.init7.net/opnsense
+  PKR_VAR_VERSION: 25.7
+  PKR_VAR_ISO_CHECKSUM: sha1:e388904d39e4e9604a89111b8410c98474782a41
+
 jobs:
   build-image:
     runs-on: ubuntu-latest
@@ -30,16 +35,12 @@ jobs:
       - name: Set up packer
         uses: hashicorp/setup-packer@v3
 
-      - name: Setup environment
-        run: |
-          cat .env >> $GITHUB_ENV
-
       - name: Cache ISO image
         uses: actions/cache@v4
         id: cache-iso
         with:
           path: iso
-          key: iso-${{ github.env.PKR_VAR_ISO_CHECKSUM }}
+          key: iso-${{ env.PKR_VAR_ISO_CHECKSUM }}
 
       - name: Get OPNsense ISO
         if: ${{ steps.cache-iso.outputs.cache-hit != 'true' }}
@@ -57,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: opnsense-image
-          path: output/
+          path: output/opnsense.qcow2
 
   upload-image:
     runs-on: ubuntu-latest
@@ -73,6 +74,10 @@ jobs:
         with:
           name: opnsense-image
           path: output
+
+      - name: Find all files in repository
+        run: |
+          find . -type f
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
